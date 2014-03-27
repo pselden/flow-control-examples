@@ -11,7 +11,7 @@ function getValue(id, callback){
         fetchAndCache(id, callback);
     }
 
-    function fetchAndCache(callback){
+    function fetchAndCache(id, callback){
         async.waterfall([
             function (callback){
                 db.query('SELECT * FROM values WHERE id = $1', [id], callback);
