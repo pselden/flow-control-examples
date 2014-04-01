@@ -1,19 +1,18 @@
 function getValue(id, callback){
     getFromCache(id)
-        .then(function(cachedValue){
-           if(cachedValue){ return cachedValue; }
-        
-           getFromDb(id)
-               .then(function(dbValue){
-                   saveToCache(id, dbValue);
-                   return dbValue;
-               })
-        })
+        .then(returnOrFetch.bind(this, id))
         .done(callback);
 }
 
 function getFromCache(id){
     return cache.get(id);
+}
+
+function returnOrFetch(id, cachedValue){
+    if(cachedValue){ return cachedValue; }
+
+    return getFromDb(id)
+        .done(saveToCache.bind(this, id));
 }
 
 function getFromDb(id){
