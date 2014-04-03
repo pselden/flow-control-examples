@@ -1,18 +1,14 @@
-function getValue(id, callback){
-    getFromCache(id)
-        .then(returnOrFetch.bind(this, id))
-        .done(callback);
-}
+var cache = require('../../utils/cache').promises;
+var db = require('../../utils/db').promises;
 
-function getFromCache(id){
-    return cache.get(id);
-}
+function getValue(id){
+    return cache.get(id).then(function(cachedValue){
+        if(cachedValue){ return cachedValue; }
 
-function returnOrFetch(id, cachedValue){
-    if(cachedValue){ return cachedValue; }
-
-    return getFromDb(id)
-        .done(saveToCache.bind(this, id));
+        return getFromDb(id).then(function(dbValue){
+            return saveToCache(id, dbValue);
+        }).then()
+    });
 }
 
 function getFromDb(id){
@@ -20,5 +16,9 @@ function getFromDb(id){
 }
 
 function saveToCache(id, value){
-    return cache.put(id, value);
+    return cache.set(id, value);
 }
+
+getValue(1).done(function(result){
+    console.log(result);
+});

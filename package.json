@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "async": "^0.6.2"
+    "async": "^0.6.2",
+    "bluebird": "^1.2.1",
+    "co": "^3.0.5"
   }
 }

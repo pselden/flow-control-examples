@@ -1,4 +1,6 @@
 var async = require('async');
+var cache = require('../../utils/cache');
+var db = require('../../utils/db');
 
 function getValue(id, callback){
     async.waterfall([
@@ -30,3 +32,7 @@ function fetchAndCache(id, callback){
         }
     ], callback);
 }
+
+getValue(1, function(err, result){
+   console.log(result);
+});
